@@ -1,5 +1,6 @@
 import requests
 import os
+import sys
 import shutil
 import zipfile
 from colorama import init, Fore, Style
@@ -7,7 +8,7 @@ init()
 
 print(f"\
 {Fore.YELLOW}=====================\n\
-Town of Us Installator\n\
+Town of Us Installer\n\
 ====================={Style.RESET_ALL}\n\
 Select game version:\n\
 1. 2021.5.10s\n\
@@ -18,13 +19,14 @@ Select game version:\n\
 ")
 
 while True: # do ..
-    version = int(input("Game version: ")) - 1
-    if 0 < version < 5: # .. while
+    try: version = int(input("Game version: ")) - 1
+    except: pass
+    if 0 <= version < 5: # .. while
         break
     else:
         print(f"{Fore.RED}Invalid version: {str(version + 1)}{Style.RESET_ALL}")
 while True:
-    susdir = input("Folder gry: ")
+    susdir = input("Game directory: ").replace('"', '')
     if os.path.isfile(f"{susdir}\\Among Us.exe"):
         break
     else:
@@ -35,19 +37,40 @@ link = "https://github.com/slushiegoose/Town-Of-Us/releases/download/v{0}/TownOf
 print()
 
 print(f"{Fore.GREEN}Downloading from: {link}{Style.RESET_ALL}")
-r = requests.get(link, allow_redirects=True)
-open('townofsus.zip', 'wb').write(r.content)
+try: r = requests.get(link, allow_redirects=True)
+except:
+    print(f"{Fore.RED}Couldn't download file. Please check internet connection{Style.RESET_ALL}")
+    input()
+    sys.exit(2)
+try: open('townofsus.zip', 'wb').write(r.content)
+except:
+    print(f"{Fore.RED}Couldn't download file. Please run as administrator{Style.RESET_ALL}")
+    input()
+    sys.exit(1)
 
 moddir = f"{susdir}\\..\\Town of Us"
 print(f"{Fore.GREEN}Creating directory: {moddir}{Style.RESET_ALL}")
-shutil.copytree(susdir, moddir)
+try: shutil.copytree(susdir, moddir)
+except FileExistsError:
+    shutil.rmtree(moddir)
+    shutil.copytree(susdir, moddir)
+except:
+    print(f"{Fore.RED}Couldn't create directory. Please run as administrator{Style.RESET_ALL}")
+    input()
+    sys.exit(1)
 
 print(f"{Fore.GREEN}Installing mod in directory..{Style.RESET_ALL}")
 with zipfile.ZipFile("townofsus.zip", 'r') as suszip:
-    suszip.extractall(moddir)
+    try: suszip.extractall(moddir)
+    except:
+        print(f"{Fore.RED}Couldn't install mod. Please run as administrator.{Style.RESET_ALL}")
+        input()
+        sys.exit(1)
 
-os.remove("townofsus.zip")
+try: os.remove("townofsus.zip")
+except: pass
 print()
 print(f"{Fore.YELLOW}Town of Us installed in folder: {moddir}!{Style.RESET_ALL}")
-input(f"{Fore.YELLOW}Press Enter, to open the game..{Style.RESET_ALL}")
+print(f"{Fore.YELLOW}Press Enter, to open the game..{Style.RESET_ALL}")
+input()
 os.startfile(f"{moddir}\\Among Us.exe")
