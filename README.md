@@ -13,7 +13,7 @@ If you run into any problems, contact me on Discord: wiger#7926
 ## Installer of Us
 Prosty konsolowy instalator Town of Us.
 ### Czemu?
-Zrobiłem to dla moich przyjaciół, bo chcieliśmy zagrać w Town of Us, ale pomyślałem, że komuś innemu mogłoby się to przydać.\
+Zrobiłem to dla kolegów, bo chcieliśmy zagrać w Town of Us, ale pomyślałem, że komuś innemu mogłoby się to przydać.\
 Po prostu włączasz aplikację, a ona instaluje dla Ciebie Town of Us.
 ### Użycie
 Wejdź w zakładkę [releases](https://github.com/wiger3/installer-of-us/releases "releases") i pobierz odpowiednią wersję językową:\
