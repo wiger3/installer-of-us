@@ -13,11 +13,12 @@ Town of Us Installer\n\
 ====================={Style.RESET_ALL}\n\
 Select game version:")
 
-gamever = ["2021.5.10s", "2021.4.14s", "2021.4.12s", "2021.3.31.3s", "2021.3.5s"]
+gamever = ["2021.5.25e (Epic Games)", "2021.5.10s", "2021.4.14s", "2021.4.12s", "2021.3.31.3s", "2021.3.5s"]
 for i in range(0, len(gamever)):
     print(f"{i + 1}. {gamever[i]}")
 
-modver = ["2.0.4", "2.0.2", "2.0.2", "2.0.0", "1.2.0"]
+modver = ["2.0.5", "2.0.4", "2.0.2", "2.0.2", "2.0.0", "1.2.0"]
+epic = False
 while True: # do ..
     try: version = int(input("Game version: ")) - 1
     except: pass
@@ -25,6 +26,9 @@ while True: # do ..
         break
     else:
         print(f"{Fore.RED}Invalid version: {str(version + 1)}{Style.RESET_ALL}")
+if version == 0:
+    print(f"{Fore.CYAN}Experimental Epic Games Launcher mode enabled!{Style.RESET_ALL}")
+    epic = True
 while True:
     susdir = os.path.abspath(input("Game directory: ").replace('"', ''))
     if os.path.isfile(f"{susdir}\\Among Us.exe"):
@@ -32,7 +36,10 @@ while True:
     else:
         print(f"{Fore.RED}Directory doesn't contain Among Us: {susdir}{Style.RESET_ALL}")
 
-link = "https://github.com/slushiegoose/Town-Of-Us/releases/download/v{0}/TownOfUs-v{0}.zip".format(modver[version])
+if epic:
+    link = "https://github.com/wiger3/installer-of-us/raw/epic/TownOfUs-v2.0.4-EPIC.zip"
+else:
+    link = "https://github.com/slushiegoose/Town-Of-Us/releases/download/v{0}/TownOfUs-v{0}.zip".format(modver[version])
 print()
 
 print(f"{Fore.GREEN}Downloading from: {link}{Style.RESET_ALL}")
@@ -51,16 +58,19 @@ except:
     input()
     sys.exit(1)
 
-moddir = os.path.abspath(f"{susdir}\\..\\Town of Us")
-print(f"{Fore.GREEN}Creating directory: {moddir}{Style.RESET_ALL}")
-try: shutil.copytree(susdir, moddir)
-except FileExistsError:
-    shutil.rmtree(moddir)
-    shutil.copytree(susdir, moddir)
-except:
-    print(f"{Fore.RED}Couldn't create directory. Please run as administrator{Style.RESET_ALL}")
-    input()
-    sys.exit(1)
+if epic:
+    moddir = susdir
+else:
+    moddir = os.path.abspath(f"{susdir}\\..\\Town of Us")
+    print(f"{Fore.GREEN}Creating directory: {moddir}{Style.RESET_ALL}")
+    try: shutil.copytree(susdir, moddir)
+    except FileExistsError:
+        shutil.rmtree(moddir)
+        shutil.copytree(susdir, moddir)
+    except:
+        print(f"{Fore.RED}Couldn't create directory. Please run as administrator{Style.RESET_ALL}")
+        input()
+        sys.exit(1)
 
 print(f"{Fore.GREEN}Installing mod in directory..{Style.RESET_ALL}")
 with zipfile.ZipFile("townofsus.zip", 'r') as suszip:
@@ -76,4 +86,7 @@ print()
 print(f"{Fore.YELLOW}Town of Us installed in folder: {moddir}!{Style.RESET_ALL}")
 print(f"{Fore.YELLOW}Press Enter, to open the game..{Style.RESET_ALL}")
 input()
-os.startfile(f"{moddir}\\Among Us.exe")
+if epic:
+    os.startfile("com.epicgames.launcher://apps/963137e4c29d4c79a81323b8fab03a40?action=launch&silent=true")
+else:
+    os.startfile(f"{moddir}\\Among Us.exe")
