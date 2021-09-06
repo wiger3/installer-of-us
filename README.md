@@ -1,5 +1,5 @@
-#ARCHIVED
-##This repository is archived, because i don't have time to work on it anymore. Maybe I'll make a new version with a GUI in the future. Who knows?
+# ARCHIVED
+## This repository is archived, because i don't have time to work on it anymore. Maybe I'll make a new version with a GUI in the future. Who knows?
 # English
 ## Installer of Us
 A simple console-based Town of Us installer.
